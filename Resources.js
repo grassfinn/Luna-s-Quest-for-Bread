@@ -11,6 +11,11 @@ class Resources {
       diamond: './images/diamond.png',
     };
     this.images = {};
+    // Might have to do the same for audio?
+    this.sounds = {
+      win: new Audio('./sounds/Hank C Burnette -Rockin The Dog.mp3'),
+      bark: new Audio('./sounds/bark.mp3'),
+    };
   }
 
   // Load each Image using promises to prevent images not loading in

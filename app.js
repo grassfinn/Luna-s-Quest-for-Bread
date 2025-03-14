@@ -3,11 +3,10 @@ import Inventory from './Inventory.js';
 import Item from './Item.js';
 import Level from './Level.js';
 import { resources } from './Resources.js';
-import { findItem, removeItem } from './utils.js';
+import { findItem, getMouseCoords, removeItem } from './utils.js';
 const assets = await resources.loadImages();
-
 // TODO
-// Clean UI Fix Jitternesss
+
 // HTML Elements
 const inventoryEle = document.querySelector('#inventory');
 const dialogElement = document.querySelector('dialog');
@@ -25,9 +24,8 @@ canvas.width = width;
 canvas.height = height;
 const ctx = canvas.getContext('2d');
 const itemsCtx = items.getContext('2d');
-const youWin = new Audio('./sounds/Hank C Burnette -Rockin The Dog.mp3');
-youWin.volume = 0.55;
-const bark = new Audio('./sounds/bark.mp3');
+
+resources.sounds.win.volume = 0.55;
 
 // etc
 let msgInterval;
@@ -87,52 +85,13 @@ bedroom.addItem(bread);
 bedroom.draw(ctx);
 //! Event Listeners
 
-items.addEventListener('click', (e) => mouseCoord(e));
+items.addEventListener('click', (e) => handleMouseClick(e, items));
 // Debugger
-items.addEventListener('mousemove', (e) => {
-  // Need to account padding,margin,etc for the canvases X and Y
-  const { x, y } = e;
-
-  const bounding = canvas.getBoundingClientRect();
-  const canvasX = x - bounding.left;
-  const canvasY = y - bounding.top;
-  document.querySelector(
-    '#debug-text'
-  ).textContent = `X:${canvasX} Y:${canvasY}`;
-});
+items.addEventListener('mousemove', (e) => handleMouseMove(e, items));
 //! Global Event Listeners
-window.addEventListener('click', (e) => {
-  const currentElement = e.target;
-  const clickedItem = currentElement.dataset.name;
+window.addEventListener('click', (e) => handleGlobalClick(e));
 
-  if (currentElement.textContent === 'Check') {
-    if (bedroom.checkPuzzle() === 'bread') {
-      youWin.currentTime = 6;
-      youWin.play();
-      return;
-    }
-  }
-
-  if (currentElement.localName === 'img' && dialogElement.open) {
-    const indexOfItem = findItem(clickedItem, inventory.items);
-    const currentItem = inventory.items[indexOfItem];
-    if (!currentItem) return;
-    bedroom.puzzle.push(currentItem);
-    puzzleElement.append(currentElement);
-    inventory.removeItem(indexOfItem);
-
-    return;
-  }
-
-  if (currentElement.localName === 'img') {
-    return displayMsg(currentElement.alt);
-  }
-});
-
-window.addEventListener('keydown', (e) => {
-  e.key === 'b' ? bark.play() : '';
-  bark.currentTime = 0;
-});
+window.addEventListener('keydown', handleKeyDown);
 
 // Functions
 function createImg(item) {
@@ -150,22 +109,70 @@ function createImg(item) {
 function displayMsg(msg) {
   clearInterval(msgInterval);
   const msgElement = document.querySelector('#msg');
+  msgElement.style.visibility = ' visible'
   msgElement.textContent = msg;
 
   msgInterval = setTimeout(() => {
+    msgElement.style.visibility = 'hidden'
     msgElement.textContent = '';
-  }, 1000);
+  }, 2000);
 }
 
-function mouseCoord(event) {
-  const { x, y } = event;
-  const bounding = canvas.getBoundingClientRect();
-  // Need to account padding,margin,etc for the canvases X and Y
-  const canvasX = x - bounding.left;
-  const canvasY = y - bounding.top;
+// Handler Functions
+function handleMouseMove(e, element) {
+  const { canvasX, canvasY } = getMouseCoords(e, element);
+  document.querySelector(
+    '#debug-text'
+  ).textContent = `X:${canvasX} Y:${canvasY}`;
+}
+
+function handleGlobalClick(e) {
+  const currentElement = e.target;
+  const clickedItem = currentElement.dataset.name;
+
+  if (currentElement.textContent === 'Check') {
+    handleWin();
+    return;
+  }
+
+  if (currentElement.localName === 'img' && dialogElement.open) {
+    handlePuzzleInteraction(currentElement);
+    return;
+  }
+
+  if (currentElement.localName === 'img') {
+    return displayMsg(currentElement.alt);
+  }
+}
+
+function handleWin() {
+  if (bedroom.checkPuzzle() === 'bread') {
+    resources.sounds.win.currentTime = 6;
+    resources.sounds.win.play();
+  }
+}
+
+function handlePuzzleInteraction(imgElement) {
+  const indexOfItem = findItem(imgElement.dataset.name, inventory.items);
+  const currentItem = inventory.items[indexOfItem];
+  if (!currentItem) return;
+  bedroom.puzzle.push(currentItem);
+  puzzleElement.append(imgElement);
+  inventory.removeItem(indexOfItem);
+}
+
+function handleKeyDown(e) {
+  if (e.key === 'b') {
+    resources.sounds.bark.play();
+  }
+  resources.sounds.bark.currentTime = 0;
+}
+
+function handleMouseClick(event, element) {
+  const { canvasX, canvasY } = getMouseCoords(event, element);
   let clickedItem = '';
+  // Check if it has been clicked
   bedroom.items.forEach((item) => {
-    // Check if it has been clicked
     // if it is the one clicked, remove it then repaint
     if (item.isClicked(canvasX, canvasY)) {
       clickedItem = item.isClicked(canvasX, canvasY);
@@ -178,10 +185,6 @@ function mouseCoord(event) {
         // dialogElement.showModal();
         //! Show allows other elements to be clicked
         dialogElement.show();
-        // youWin.play();
-        // youWin.currentTime = 6;
-        console.dir(dialogElement);
-
         return;
       }
 
@@ -196,7 +199,6 @@ function mouseCoord(event) {
       bedroom.removeItem(clickedItem);
 
       // Place in inventory
-
       inventory.addItem(clickedItem);
       inventoryEle.append(createImg(clickedItem));
       console.log(bedroom.items);

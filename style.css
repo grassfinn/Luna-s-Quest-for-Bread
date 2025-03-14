@@ -26,18 +26,19 @@ main {
 }
 
 #debugger {
-  display: none;
+  /* display: none; */
 }
 /* UI */
 #msg {
   position: absolute;
   z-index: 2;
   background-color: lightgray;
-  opacity: 60%;
   border-radius: 20px;
   left: 50%;
   transform: translate(-50%);
   top: 20px;
+  padding: 1em;
+  visibility: hidden;
 }
 #inventory {
   position: absolute;
