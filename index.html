@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luna's Quest for Bread</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="debugger">
+      <h1>mouse position</h1>
+      <h2 id="debug-text"></h2>
+    </div>
+    <main id="game">
+      <!-- Msg -->
+      <p id="msg"></p>
+
+      <!-- Canvas Layers -->
+      <canvas id="items"></canvas>
+      <canvas id="background"></canvas>
+      <!-- Modals -->
+      <dialog>
+        <h2>Unlock Bread?</h2>
+        <section id="lock"></section>
+        <form method="dialog">
+          <button>Check</button>
+        </form>
+      </dialog>
+      <!-- Controls -->
+      <section id="paw">
+        <img src="./pawUI/top left paw.svg" alt="" />
+        <img src="./pawUI/top right paw.svg" alt="" />
+        <img src="./pawUI/paw pad.svg" alt="" />
+        <img src="./pawUI/left paw.svg" id="left-arrow" alt="" />
+        <img src="./pawUI/right paw.svg" id="right-arrow" alt="" />
+      </section>
+      <!-- Inventory -->
+      <div id="inventory"></div>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
