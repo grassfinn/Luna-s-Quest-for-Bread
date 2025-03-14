@@ -1,37 +1,35 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
 import Inventory from './Inventory.js';
+import UI from './UI.js';
 import Item from './Item.js';
 import Level from './Level.js';
 import { resources } from './Resources.js';
 import { findItem, getMouseCoords, removeItem } from './utils.js';
+
 const assets = await resources.loadImages();
 // TODO
+// Tutorial/Cutscene?
+// Interactable Canvas
+// Bark Button
+// Inventory Fix
+// Puzzle Fix
+// Options
+// Multiple Levels / Class Supers
+// Attempt Level Builder
 
-// HTML Elements
-const inventoryEle = document.querySelector('#inventory');
-const dialogElement = document.querySelector('dialog');
-const puzzleElement = document.querySelector('#lock');
-const canvas = document.querySelector('#background');
-const items = document.querySelector('#items');
+//? Things to look into
+// canvas to draw opacity/Alpha Channel
 
 // Classes
+const ui = new UI(1200, 800, '2d');
 const inventory = new Inventory();
-const width = 1200;
-const height = 800;
-items.width = width;
-items.height = height;
-canvas.width = width;
-canvas.height = height;
-const ctx = canvas.getContext('2d');
-const itemsCtx = items.getContext('2d');
 
 resources.sounds.win.volume = 0.55;
 
 // etc
-let msgInterval;
 
 // Assets
-const bedroom = new Level(assets.bedroom, itemsCtx);
+const bedroom = new Level(assets.bedroom, ui.itemsLayerCtx);
 const bread = new Item(
   'bread',
   assets.bread,
@@ -82,41 +80,22 @@ bedroom.addItem(emerald);
 bedroom.addItem(amethyst);
 bedroom.addItem(diamond);
 bedroom.addItem(bread);
-bedroom.draw(ctx);
-//! Event Listeners
+bedroom.draw(ui.backgroundLayerCtx);
 
-items.addEventListener('click', (e) => handleMouseClick(e, items));
+//! Event Listeners
+ui.itemsLayer.addEventListener('click', (e) =>
+  handleMouseClick(e, ui.itemsLayer)
+);
 // Debugger
-items.addEventListener('mousemove', (e) => handleMouseMove(e, items));
+ui.itemsLayer.addEventListener('mousemove', (e) =>
+  handleMouseMove(e, ui.itemsLayer)
+);
 //! Global Event Listeners
 window.addEventListener('click', (e) => handleGlobalClick(e));
 
 window.addEventListener('keydown', handleKeyDown);
 
 // Functions
-function createImg(item) {
-  const element = document.createElement('img');
-  element.src = item.resource.image.src;
-  element.width = item.dimensions.w;
-  element.height = item.dimensions.h;
-  element.dataset.additionInfo = `X:${item.dimensions.x},Y:${item.dimensions.y}`;
-  element.dataset.name = item.name;
-  element.alt = item.desc;
-  element.className = 'item';
-  return element;
-}
-
-function displayMsg(msg) {
-  clearInterval(msgInterval);
-  const msgElement = document.querySelector('#msg');
-  msgElement.style.visibility = ' visible'
-  msgElement.textContent = msg;
-
-  msgInterval = setTimeout(() => {
-    msgElement.style.visibility = 'hidden'
-    msgElement.textContent = '';
-  }, 2000);
-}
 
 // Handler Functions
 function handleMouseMove(e, element) {
@@ -135,13 +114,23 @@ function handleGlobalClick(e) {
     return;
   }
 
-  if (currentElement.localName === 'img' && dialogElement.open) {
+  if (ui.dialog.open && inventory.items.length) {
     handlePuzzleInteraction(currentElement);
     return;
   }
 
+  if (ui.dialog.open && bedroom.puzzle.length) {
+    handlePuzzleInteraction(currentElement);
+    return;
+  }
+
+  // if dialog is open and puzzle has length,
+  // put item back into the inventory
+  // if (ui.dialog.open && bedroom.puzzle.length) {
+  // }
+
   if (currentElement.localName === 'img') {
-    return displayMsg(currentElement.alt);
+    return ui.displayMsg(currentElement.alt);
   }
 }
 
@@ -153,13 +142,26 @@ function handleWin() {
 }
 
 function handlePuzzleInteraction(imgElement) {
-  const indexOfItem = findItem(imgElement.dataset.name, inventory.items);
-  const currentItem = inventory.items[indexOfItem];
-  if (!currentItem) return;
-  bedroom.puzzle.push(currentItem);
-  puzzleElement.append(imgElement);
-  inventory.removeItem(indexOfItem);
-}
+    const indexOfItem = findItem(imgElement.dataset.name, inventory.items);
+    const currentItem = inventory.items[indexOfItem];
+    if (!currentItem) return;
+    bedroom.puzzle.push(currentItem);
+    ui.puzzle.append(imgElement);
+    inventory.removeItem(indexOfItem);
+  
+  // if (bedroom.puzzle.length) {
+  //   console.log(bedroom.puzzle.length);
+  //   const indexOfItem = findItem(imgElement.dataset.name, bedroom.puzzle);
+  //   const currentItem = bedroom.puzzle[indexOfItem];
+  //   console.log(currentItem);
+
+  //   if (!currentItem) return;
+  //   inventory.items.push(currentItem);
+  //   ui.inventory.append(imgElement);
+  //   // bedroom.puzzle.removeItem(indexOfItem);
+  //   bedroom.puzzle = removeItem(indexOfItem, bedroom.puzzle);
+  }
+
 
 function handleKeyDown(e) {
   if (e.key === 'b') {
@@ -170,6 +172,7 @@ function handleKeyDown(e) {
 
 function handleMouseClick(event, element) {
   const { canvasX, canvasY } = getMouseCoords(event, element);
+  const { createImage } = ui;
   let clickedItem = '';
   // Check if it has been clicked
   bedroom.items.forEach((item) => {
@@ -184,24 +187,24 @@ function handleMouseClick(event, element) {
         //! Show modal prevents content from being clicked on
         // dialogElement.showModal();
         //! Show allows other elements to be clicked
-        dialogElement.show();
+        ui.dialog.show();
         return;
       }
 
       // check if it can't be picked up
       if (!bedroom.removeItem(clickedItem)) {
-        displayMsg(item.desc);
+        ui.displayMsg(item.desc);
         return;
       }
 
       // can pick up
-      itemsCtx.clearRect(x, y, w, h);
+      ui.itemsLayerCtx.clearRect(x, y, w, h);
       bedroom.removeItem(clickedItem);
 
       // Place in inventory
       inventory.addItem(clickedItem);
-      inventoryEle.append(createImg(clickedItem));
-      console.log(bedroom.items);
+      ui.inventory.append(createImage(clickedItem));
+      console.log({ itemsLeft: bedroom.items });
     }
   });
 }
