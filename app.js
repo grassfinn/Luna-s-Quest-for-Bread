@@ -12,7 +12,6 @@ const assets = await resources.loadImages();
 // Interactable Canvas
 // Bark Button
 // Inventory Fix
-// Puzzle Fix
 // Options
 // Multiple Levels / Class Supers
 // Attempt Level Builder
@@ -114,16 +113,10 @@ function handleGlobalClick(e) {
     return;
   }
 
-  if (ui.dialog.open && inventory.items.length) {
-    handlePuzzleInteraction(currentElement);
+  if (ui.dialog.open) {
+    handlePuzzleInteraction(currentElement, currentElement.parentElement.id);
     return;
   }
-
-  if (ui.dialog.open && bedroom.puzzle.length) {
-    handlePuzzleInteraction(currentElement);
-    return;
-  }
-
   // if dialog is open and puzzle has length,
   // put item back into the inventory
   // if (ui.dialog.open && bedroom.puzzle.length) {
@@ -140,28 +133,34 @@ function handleWin() {
     resources.sounds.win.play();
   }
 }
+function handlePuzzleInteraction(imgElement, zone) {
+  // Switch items by the determining zone.
+  const itemName = imgElement.dataset.name;
+  const indexOfItem =
+    zone === 'lock'
+      ? findItem(itemName, bedroom.puzzle)
+      : findItem(itemName, inventory.items);
+  const currentItem =
+    zone === 'lock'
+      ? bedroom.puzzle[indexOfItem]
+      : inventory.items[indexOfItem];
 
-function handlePuzzleInteraction(imgElement) {
-    const indexOfItem = findItem(imgElement.dataset.name, inventory.items);
-    const currentItem = inventory.items[indexOfItem];
-    if (!currentItem) return;
-    bedroom.puzzle.push(currentItem);
-    ui.puzzle.append(imgElement);
-    inventory.removeItem(indexOfItem);
-  
-  // if (bedroom.puzzle.length) {
-  //   console.log(bedroom.puzzle.length);
-  //   const indexOfItem = findItem(imgElement.dataset.name, bedroom.puzzle);
-  //   const currentItem = bedroom.puzzle[indexOfItem];
-  //   console.log(currentItem);
+  if (!currentItem) return;
 
-  //   if (!currentItem) return;
-  //   inventory.items.push(currentItem);
-  //   ui.inventory.append(imgElement);
-  //   // bedroom.puzzle.removeItem(indexOfItem);
-  //   bedroom.puzzle = removeItem(indexOfItem, bedroom.puzzle);
+  if (zone === 'lock') {
+    inventory.items.push(currentItem);
+    ui.inventory.append(imgElement);
+    // Fix This?
+    bedroom.puzzle = removeItem(indexOfItem, bedroom.puzzle);
+    return;
   }
-
+  // Maybe Shift inside of push?
+  bedroom.puzzle.push(currentItem);
+  ui.puzzle.append(imgElement);
+  // Fix This?
+  inventory.removeItem(indexOfItem);
+  return;
+}
 
 function handleKeyDown(e) {
   if (e.key === 'b') {
