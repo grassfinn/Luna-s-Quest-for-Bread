@@ -10,8 +10,6 @@ const assets = await resources.loadImages();
 // TODO
 // Tutorial/Cutscene?
 // Interactable Canvas
-// Bark Button
-// Inventory Fix
 // Options
 // Multiple Levels / Class Supers
 // Attempt Level Builder
@@ -93,6 +91,7 @@ ui.itemsLayer.addEventListener('mousemove', (e) =>
 window.addEventListener('click', (e) => handleGlobalClick(e));
 
 window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
 
 // Functions
 
@@ -108,6 +107,17 @@ function handleGlobalClick(e) {
   const currentElement = e.target;
   const clickedItem = currentElement.dataset.name;
 
+  if (currentElement.id === 'bark') {
+    resources.sounds.bark.play();
+    resources.sounds.bark.currentTime = 0;
+  }
+
+  if (currentElement.id === 'inventory-btn') {
+    handleInventory();
+    return;
+  }
+  // Close
+
   if (currentElement.textContent === 'Check') {
     handleWin();
     return;
@@ -122,7 +132,7 @@ function handleGlobalClick(e) {
   // if (ui.dialog.open && bedroom.puzzle.length) {
   // }
 
-  if (currentElement.localName === 'img') {
+  if (currentElement.alt) {
     return ui.displayMsg(currentElement.alt);
   }
 }
@@ -164,9 +174,37 @@ function handlePuzzleInteraction(imgElement, zone) {
 
 function handleKeyDown(e) {
   if (e.key === 'b') {
+    ui.barkBtn.style.transform = 'scale(1.1)';
     resources.sounds.bark.play();
   }
   resources.sounds.bark.currentTime = 0;
+}
+function handleKeyUp(e) {
+  if (e.key === 'b') {
+    ui.barkBtn.style.transform = 'scale(1)';
+  }
+}
+
+function handleInventory() {
+  // Play sound
+  // Open
+  if (ui.inventory.className === 'open') {
+    ui.inventory.animate(
+      closeInventoryAnimation[0],
+      closeInventoryAnimation[1]
+    ).onfinish = () => {
+      ui.inventory.style.scale = '0';
+      ui.inventory.classList.toggle('open');
+    };
+    return;
+  }
+  ui.inventory.animate(
+    openInventoryAnimation[0],
+    openInventoryAnimation[1]
+  ).onfinish = () => {
+    ui.inventory.style.scale = '1';
+    ui.inventory.classList.toggle('open');
+  };
 }
 
 function handleMouseClick(event, element) {
@@ -207,3 +245,17 @@ function handleMouseClick(event, element) {
     }
   });
 }
+
+// Animations
+const closeInventoryAnimation = [
+  [{ scale: 0 }],
+  {
+    duration: 750,
+  },
+];
+const openInventoryAnimation = [
+  [{ scale: 1 }],
+  {
+    duration: 750,
+  },
+];

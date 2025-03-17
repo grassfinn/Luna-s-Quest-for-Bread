@@ -13,6 +13,8 @@ export default class UI {
   msg = document.querySelector('#msg');
   dialog = document.querySelector('dialog');
   puzzle = document.querySelector('#lock');
+  barkBtn = document.querySelector('#bark');
+  inventoryBtn = document.querySelector('#inventory-btn');
   msgInterval = null;
   constructor(w, h, context) {
     this.backgroundLayer.width = w;

@@ -26,7 +26,7 @@ main {
 }
 
 #debugger {
-  /* display: none; */
+  display: none;
 }
 /* UI */
 #msg {
@@ -41,26 +41,23 @@ main {
   visibility: hidden;
 }
 #inventory {
+  scale: 0;
   position: absolute;
   z-index: 3;
   display: flex;
-  width: 1000px;
+  width: 830px;
   min-height: 100px;
   align-items: center;
   justify-content: space-evenly;
   top: 84%;
   left: 15%;
-  animation: 1s ease-in pup-down;
   background-color: lightgray;
   opacity: 60%;
   border-radius: 20px;
 }
-@keyframes pup-down {
-  0% {
-  }
-  100% {
-    scale: 0;
-  }
+
+#inventory-btn:hover {
+  cursor: pointer;
 }
 
 #inventory > * {
@@ -115,14 +112,30 @@ dialog button {
 #lock div {
 }
 /* Controls */
-#paw {
+#paw,
+#bark {
   position: relative;
+  height: 150px;
+  width: 150px;
   z-index: 2;
+}
+
+#bark {
+  top: 61%;
+  left: 86%;
+}
+
+#bark:hover{
+  cursor: pointer;
+  scale: 1.1;
+}
+#bark:active {
+  scale: 1;
+}
+
+#paw {
   top: 80%;
   left: 10px;
-  width: 150px;
-  height: 150px;
-  position: relative;
 }
 
 #paw img {
