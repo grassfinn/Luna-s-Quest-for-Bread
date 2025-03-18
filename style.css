@@ -109,7 +109,10 @@ dialog button {
 #lock {
   display: flex;
 }
-#lock div {
+#lock > * {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black;
 }
 /* Controls */
 #paw,
@@ -125,7 +128,7 @@ dialog button {
   left: 86%;
 }
 
-#bark:hover{
+#bark:hover {
   cursor: pointer;
   scale: 1.1;
 }
@@ -152,11 +155,10 @@ dialog button {
   left: 80px;
 }
 #paw img:nth-of-type(3) {
-  width: 100px;
+  width: 80px;
   height: 80px;
-  left: 50%;
+  left: 24%;
   top: 40%;
-  transform: translate(-50%);
 }
 #paw img:nth-of-type(4) {
   top: 50px;
@@ -167,11 +169,17 @@ dialog button {
   left: 105px;
 }
 #left-arrow:hover,
-#right-arrow:hover {
+#right-arrow:hover,
+#menu:hover,
+#hint:hover,
+#inventory-btn:hover {
   cursor: pointer;
   scale: 1.2;
 }
 #left-arrow:active,
-#right-arrow:active {
+#right-arrow:active,
+#menu:active,
+#hint:active,
+#inventory-btn:active {
   scale: 1;
 }

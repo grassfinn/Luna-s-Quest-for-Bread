@@ -5,8 +5,10 @@ import Item from './Item.js';
 import Level from './Level.js';
 import { resources } from './Resources.js';
 import { findItem, getMouseCoords, removeItem } from './utils.js';
-
+import { testLevel } from './levels/Bedroom.js';
 const assets = await resources.loadImages();
+console.log(testLevel);
+
 // TODO
 // Tutorial/Cutscene?
 // Interactable Canvas
@@ -144,6 +146,13 @@ function handleWin() {
   }
 }
 function handlePuzzleInteraction(imgElement, zone) {
+  const slots = document.querySelectorAll('.slot');
+  const children = [...slots].map((slot) =>
+    slot.children.length ? true : false
+  );
+  console.log(children);
+  // If that slot has a child then dont try to put an item in that slot
+
   // Switch items by the determining zone.
   const itemName = imgElement.dataset.name;
   const indexOfItem =

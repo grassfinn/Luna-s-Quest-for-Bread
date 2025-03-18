@@ -24,13 +24,10 @@ export default class Item {
 
   draw(ctx) {
     if (this.resource.isLoaded) {
-      ctx.drawImage(
-        this.resource.image,
-        this.dimensions.x,
-        this.dimensions.y,
-        this.dimensions.w,
-        this.dimensions.h
-      );
+      const { x, y, w, h } = this.dimensions;
+      const { image } = this.resource;
+
+      ctx.drawImage(image, x, y, w, h);
     } else {
       console.error('Image is not loaded');
     }
