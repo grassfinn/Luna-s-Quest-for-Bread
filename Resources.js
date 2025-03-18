@@ -53,7 +53,7 @@ class Resources {
         return acc;
       }, {});
 
-      return resourcesObj;
+      return await resourcesObj;
     } catch (e) {
       console.error(e.message);
     }

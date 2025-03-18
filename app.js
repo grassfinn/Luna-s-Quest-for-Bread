@@ -1,13 +1,11 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
 import Inventory from './Inventory.js';
-import UI from './UI.js';
+import { ui } from './UI.js';
 import Item from './Item.js';
-import Level from './Level.js';
 import { resources } from './Resources.js';
 import { findItem, getMouseCoords, removeItem } from './utils.js';
-import { testLevel } from './levels/Bedroom.js';
-const assets = await resources.loadImages();
-console.log(testLevel);
+import { bedroom } from './levels/Bedroom.js';
+export const assets = await resources.loadImages();
 
 // TODO
 // Tutorial/Cutscene?
@@ -20,15 +18,13 @@ console.log(testLevel);
 // canvas to draw opacity/Alpha Channel
 
 // Classes
-const ui = new UI(1200, 800, '2d');
+const currentLevel = bedroom;
 const inventory = new Inventory();
 
 resources.sounds.win.volume = 0.55;
 
 // etc
-
 // Assets
-const bedroom = new Level(assets.bedroom, ui.itemsLayerCtx);
 const bread = new Item(
   'bread',
   assets.bread,
@@ -118,7 +114,6 @@ function handleGlobalClick(e) {
     handleInventory();
     return;
   }
-  // Close
 
   if (currentElement.textContent === 'Check') {
     handleWin();
@@ -131,9 +126,6 @@ function handleGlobalClick(e) {
   }
   // if dialog is open and puzzle has length,
   // put item back into the inventory
-  // if (ui.dialog.open && bedroom.puzzle.length) {
-  // }
-
   if (currentElement.alt) {
     return ui.displayMsg(currentElement.alt);
   }

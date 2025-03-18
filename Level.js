@@ -6,15 +6,11 @@ export default class Level {
     this.itemsLayer = itemsLayer;
   }
 
-  puzzle = [];
 
-  checkPuzzle() {
-    return this.puzzle.reduce((acc, cur) => {
-      return acc + cur.name[0];
-    }, '');
-  }
+ 
 
-  draw(ctx) {
+  draw(ctx) {    
+    
     if (this.resource.isLoaded) {
       ctx.drawImage(
         this.resource.image,

@@ -1,4 +1,4 @@
-export default class UI {
+class UI {
   inventory = document.querySelector('#inventory');
   //   Debugger is a reserved word
   debugger = document.querySelector('#debugger');
@@ -48,3 +48,4 @@ export default class UI {
     }, 2000);
   }
 }
+export const ui = new UI(1200, 800, '2d');
