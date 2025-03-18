@@ -1,11 +1,10 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images
-import Inventory from './Inventory.js';
-import { ui } from './UI.js';
-import Item from './Item.js';
-import { resources } from './Resources.js';
+import Inventory from './Classes/Inventory.js';
+import { ui } from './Classes/UI.js';
+import { resources } from './Classes/Resources.js';
 import { findItem, getMouseCoords, removeItem } from './utils.js';
 import { bedroom } from './levels/Bedroom.js';
-export const assets = await resources.loadImages();
+// export const assets = await resources.loadImages();
 
 // TODO
 // Tutorial/Cutscene?
@@ -18,64 +17,13 @@ export const assets = await resources.loadImages();
 // canvas to draw opacity/Alpha Channel
 
 // Classes
-const currentLevel = bedroom;
+const map = [bedroom];
+const currentLevel = map[0];
 const inventory = new Inventory();
 
 resources.sounds.win.volume = 0.55;
 
-// etc
-// Assets
-const bread = new Item(
-  'bread',
-  assets.bread,
-  { x: 625, y: 450, w: 50, h: 50 },
-  'BREAD!',
-  false
-);
-
-const bloodstone = new Item(
-  assets.bloodstone.name,
-  assets.bloodstone,
-  { x: 1050, y: 490, w: 25, h: 25 },
-  'Looks like blood!',
-  true
-);
-const ruby = new Item(
-  assets.ruby.name,
-  assets.ruby,
-  { x: 342, y: 485, w: 25, h: 25 },
-  'A red rock?',
-  true
-);
-const emerald = new Item(
-  assets.emerald.name,
-  assets.emerald,
-  { x: 1090, y: 290, w: 15, h: 15 },
-  'green rock?',
-  true
-);
-const amethyst = new Item(
-  assets.amethyst.name,
-  assets.amethyst,
-  { x: 305, y: 640, w: 30, h: 30 },
-  'Purple rock?',
-  true
-);
-const diamond = new Item(
-  assets.diamond.name,
-  assets.diamond,
-  { x: 258, y: 32, w: 20, h: 20 },
-  'fancy rock?',
-  true
-);
-
-bedroom.addItem(bloodstone);
-bedroom.addItem(ruby);
-bedroom.addItem(emerald);
-bedroom.addItem(amethyst);
-bedroom.addItem(diamond);
-bedroom.addItem(bread);
-bedroom.draw(ui.backgroundLayerCtx);
+currentLevel.draw(ui.backgroundLayerCtx);
 
 //! Event Listeners
 ui.itemsLayer.addEventListener('click', (e) =>
@@ -132,7 +80,7 @@ function handleGlobalClick(e) {
 }
 
 function handleWin() {
-  if (bedroom.checkPuzzle() === 'bread') {
+  if (bedroom.checkPuzzle()) {
     resources.sounds.win.currentTime = 6;
     resources.sounds.win.play();
   }

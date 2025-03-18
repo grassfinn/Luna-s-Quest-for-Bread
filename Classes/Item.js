@@ -1,4 +1,4 @@
-import { checkRange } from './utils.js';
+import { checkRange } from '../utils.js';
 
 export default class Item {
   constructor(name, resource, dimensions, desc, obtainable) {
@@ -26,7 +26,7 @@ export default class Item {
     if (this.resource.isLoaded) {
       const { x, y, w, h } = this.dimensions;
       const { image } = this.resource;
-      
+
       ctx.drawImage(image, x, y, w, h);
     } else {
       console.error('Image is not loaded');

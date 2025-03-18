@@ -1,21 +1,21 @@
 class Resources {
   constructor() {
     this.toLoad = {
-      bedroom: './images/bedroom.jpg',
-      bread: './images/bread.png',
-      stapler: './images/test.png',
-      bloodstone: './images/bloodstone.png',
-      ruby: './images/ruby.png',
-      emerald: './images/emerald.png',
-      amethyst: './images/amethyst.png',
-      diamond: './images/diamond.png',
+      bedroom: './assets/images/bedroom.jpg',
+      bread: './assets/images/bread.png',
+      bloodstone: './assets/images/bloodstone.png',
+      ruby: './assets/images/ruby.png',
+      emerald: './assets/images/emerald.png',
+      amethyst: './assets/images/amethyst.png',
+      diamond: './assets/images/diamond.png',
     };
     this.images = {};
     // Might have to do the same for audio?
     this.sounds = {
-      win: new Audio('./sounds/Hank C Burnette -Rockin The Dog.mp3'),
-      bark: new Audio('./sounds/bark.mp3'),
+      win: new Audio('./assets/sounds/Hank C Burnette -Rockin The Dog.mp3'),
+      bark: new Audio('./assets/sounds/bark.mp3'),
     };
+    this.loaded = false;
   }
 
   // Load each Image using promises to prevent images not loading in
@@ -52,7 +52,7 @@ class Resources {
 
         return acc;
       }, {});
-
+      this.loaded = true;
       return await resourcesObj;
     } catch (e) {
       console.error(e.message);

@@ -6,11 +6,7 @@ export default class Level {
     this.itemsLayer = itemsLayer;
   }
 
-
- 
-
-  draw(ctx) {    
-    
+  draw(ctx) {
     if (this.resource.isLoaded) {
       ctx.drawImage(
         this.resource.image,
