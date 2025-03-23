@@ -8,9 +8,11 @@ import { bedroom } from './levels/Bedroom.js';
 
 // TODO
 // Tutorial/Cutscene?
-// Interactable Canvas
+// Interactable Canvas/ items hidden under a different layer
 // Options
-// Multiple Levels / Class Supers
+  // Mode
+  // Controls
+  // Volume?
 // Attempt Level Builder
 
 //? Things to look into
@@ -52,6 +54,20 @@ function handleMouseMove(e, element) {
 function handleGlobalClick(e) {
   const currentElement = e.target;
   const clickedItem = currentElement.dataset.name;
+
+  if (currentElement.id === 'hint') {
+    // showHint() 
+    if (!bedroom.hints.length) return;
+    resources.sounds.bark.play()
+    ui.displayMsg(bedroom.hints[0],5000)
+    bedroom.hints.shift()
+  }
+
+  // FIX THIS
+  // Find a way to close out the current modal instead of tageting the modals individually
+  // handleModal()
+  if (!currentElement.contains(ui.birthstones)) 
+  ui.birthstones.close()
 
   if (currentElement.id === 'bark') {
     resources.sounds.bark.play();

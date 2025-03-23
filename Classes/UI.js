@@ -13,6 +13,8 @@ class UI {
   msg = document.querySelector('#msg');
   dialog = document.querySelector('#lock-modal');
   puzzle = document.querySelector('#lock');
+  hint = document.querySelector('#hint')
+  menu = document.querySelector('#menu')
   // Maybe add method or class for creating modals?
   birthstones = document.querySelector('#birthstones-modal')
   barkBtn = document.querySelector('#bark');
@@ -39,7 +41,7 @@ class UI {
     return element;
   }
 
-  displayMsg(msg) {
+  displayMsg(msg,time = 2000) {
     if (this.msgInterval) clearInterval(this.msgInterval);
     this.msg.style.visibility = ' visible';
     this.msg.textContent = msg;
@@ -47,7 +49,7 @@ class UI {
     this.msgInterval = setTimeout(() => {
       this.msg.style.visibility = 'hidden';
       this.msg.textContent = '';
-    }, 2000);
+    }, time);
   }
 }
 export const ui = new UI(1200, 800, '2d');
