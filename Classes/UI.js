@@ -11,8 +11,10 @@ class UI {
   backgroundLayer = document.querySelector('#background');
 
   msg = document.querySelector('#msg');
-  dialog = document.querySelector('dialog');
+  dialog = document.querySelector('#lock-modal');
   puzzle = document.querySelector('#lock');
+  // Maybe add method or class for creating modals?
+  birthstones = document.querySelector('#birthstones-modal')
   barkBtn = document.querySelector('#bark');
   inventoryBtn = document.querySelector('#inventory-btn');
   msgInterval = null;

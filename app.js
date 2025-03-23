@@ -168,6 +168,12 @@ function handleMouseClick(event, element) {
       let { dimensions } = clickedItem;
       let { x, y, w, h } = dimensions;
 
+      if (clickedItem.name === 'birthStonePictureFrame') {
+        ui.birthstones.showModal();
+        // click off modal close
+        return;
+      }
+
       // Win Condition
       if (clickedItem.name === 'bread') {
         //! Show modal prevents content from being clicked on

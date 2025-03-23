@@ -81,6 +81,14 @@ const diamond = new Item(
   'fancy rock?',
   true
 );
+const birthStonePictureFrame = new Item(
+  assets.birthStonePictureFrame.name,
+  assets.birthStonePictureFrame,
+  { x: 255, y: 430, w: 80, h: 80 },
+  'Picture of rocks?',
+  false
+);
+
 export const bedroom = new Bedroom(assets.bedroom, ui.itemsLayerCtx);
 
 bedroom.addItem(bloodstone);
@@ -89,3 +97,4 @@ bedroom.addItem(emerald);
 bedroom.addItem(amethyst);
 bedroom.addItem(diamond);
 bedroom.addItem(bread);
+bedroom.addItem(birthStonePictureFrame);

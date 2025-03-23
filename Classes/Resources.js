@@ -8,6 +8,7 @@ class Resources {
       emerald: './assets/images/emerald.png',
       amethyst: './assets/images/amethyst.png',
       diamond: './assets/images/diamond.png',
+      birthStonePictureFrame: 'assets/images/stoneframe.png',
     };
     this.images = {};
     // Might have to do the same for audio?
