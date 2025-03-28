@@ -4,15 +4,14 @@ import { ui } from './Classes/UI.js';
 import { resources } from './Classes/Resources.js';
 import { findItem, getMouseCoords, removeItem } from './utils.js';
 import { bedroom } from './levels/Bedroom.js';
+import { settings } from './Classes/Settings.js';
 // export const assets = await resources.loadImages();
 
 // TODO
 // Tutorial/Cutscene?
+// Hints based on how many items are in inventory
 // Interactable Canvas/ items hidden under a different layer
-// Options
-  // Mode
-  // Controls
-  // Volume?
+// Controls
 // Attempt Level Builder
 
 //? Things to look into
@@ -22,8 +21,14 @@ import { bedroom } from './levels/Bedroom.js';
 const map = [bedroom];
 const currentLevel = map[0];
 const inventory = new Inventory();
-
+// Maybe better way to do this?
+settings.formInputs.forEach((input) =>
+  input.addEventListener('change', handleSettingsChange)
+);
+// Sounds
 resources.sounds.win.volume = 0.55;
+resources.sounds.win.currentTime = 6;
+resources.sounds.bark.volume = settings.volume;
 
 currentLevel.draw(ui.backgroundLayerCtx);
 
@@ -54,20 +59,23 @@ function handleMouseMove(e, element) {
 function handleGlobalClick(e) {
   const currentElement = e.target;
   const clickedItem = currentElement.dataset.name;
-
-  if (currentElement.id === 'hint') {
-    // showHint() 
-    if (!bedroom.hints.length) return;
-    resources.sounds.bark.play()
-    ui.displayMsg(bedroom.hints[0],5000)
-    bedroom.hints.shift()
+  // Close Modal
+  if (currentElement.textContent === 'X') {
+    ui.currentModal.close();
+  }
+  // Paw Buttons
+  if (currentElement.id === 'menu') {
+    ui.setCurrentModal = 'settings';
+    ui.currentModal.showModal();
   }
 
-  // FIX THIS
-  // Find a way to close out the current modal instead of tageting the modals individually
-  // handleModal()
-  if (!currentElement.contains(ui.birthstones)) 
-  ui.birthstones.close()
+  if (currentElement.id === 'hint') {
+    // showHint()
+    if (!bedroom.hints.length) return;
+    resources.sounds.bark.play();
+    ui.displayMsg(bedroom.hints[0], 5000);
+    bedroom.hints.shift();
+  }
 
   if (currentElement.id === 'bark') {
     resources.sounds.bark.play();
@@ -84,7 +92,9 @@ function handleGlobalClick(e) {
     return;
   }
 
-  if (ui.dialog.open) {
+  // Might Cause Issues
+  // Was set on UI Dialog
+  if (ui.currentModal.open) {
     handlePuzzleInteraction(currentElement, currentElement.parentElement.id);
     return;
   }
@@ -94,11 +104,19 @@ function handleGlobalClick(e) {
     return ui.displayMsg(currentElement.alt);
   }
 }
-
-function handleWin() {
-  if (bedroom.checkPuzzle()) {
-    resources.sounds.win.currentTime = 6;
+// Better way to do this?
+function handleWin(bool) {
+  if (bool) {
+    ui.setCurrentModal = 'win-screen';
     resources.sounds.win.play();
+    ui.currentModal.showModal();
+    return;
+  }
+  if (bedroom.checkPuzzle()) {
+    resources.sounds.win.play();
+    ui.currentModal.close();
+    ui.setCurrentModal = 'win-screen';
+    ui.currentModal.showModal();
   }
 }
 function handlePuzzleInteraction(imgElement, zone) {
@@ -185,17 +203,21 @@ function handleMouseClick(event, element) {
       let { x, y, w, h } = dimensions;
 
       if (clickedItem.name === 'birthStonePictureFrame') {
-        ui.birthstones.showModal();
-        // click off modal close
+        ui.setCurrentModal = 'birthstones-modal';
+        ui.currentModal.showModal();
         return;
       }
 
       // Win Condition
       if (clickedItem.name === 'bread') {
+        if (settings.difficulty === 'dog') return handleWin(true);
+        // Might Cause Issues
+        // Was set on UI Dialog
+        ui.setCurrentModal = 'lock-modal';
         //! Show modal prevents content from being clicked on
         // dialogElement.showModal();
         //! Show allows other elements to be clicked
-        ui.dialog.show();
+        ui.currentModal.show();
         return;
       }
 
@@ -215,6 +237,17 @@ function handleMouseClick(event, element) {
       console.log({ itemsLeft: bedroom.items });
     }
   });
+}
+
+function handleSettingsChange(input) {
+  const { id, value } = input.target;
+  if (id === 'difficulty') {
+    settings.difficulty = value;
+  }
+  if (id === 'volume-slider') {
+    settings.volume = Number(value / 10);
+    resources.sounds.bark.volume = settings.volume;
+  }
 }
 
 // Animations

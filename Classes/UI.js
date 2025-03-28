@@ -1,4 +1,5 @@
 class UI {
+  currentModal;
   inventory = document.querySelector('#inventory');
   //   Debugger is a reserved word
   debugger = document.querySelector('#debugger');
@@ -13,10 +14,10 @@ class UI {
   msg = document.querySelector('#msg');
   dialog = document.querySelector('#lock-modal');
   puzzle = document.querySelector('#lock');
-  hint = document.querySelector('#hint')
-  menu = document.querySelector('#menu')
+  hint = document.querySelector('#hint');
+  menu = document.querySelector('#menu');
   // Maybe add method or class for creating modals?
-  birthstones = document.querySelector('#birthstones-modal')
+  birthstones = document.querySelector('#birthstones-modal');
   barkBtn = document.querySelector('#bark');
   inventoryBtn = document.querySelector('#inventory-btn');
   msgInterval = null;
@@ -41,7 +42,7 @@ class UI {
     return element;
   }
 
-  displayMsg(msg,time = 2000) {
+  displayMsg(msg, time = 2000) {
     if (this.msgInterval) clearInterval(this.msgInterval);
     this.msg.style.visibility = ' visible';
     this.msg.textContent = msg;
@@ -50,6 +51,13 @@ class UI {
       this.msg.style.visibility = 'hidden';
       this.msg.textContent = '';
     }, time);
+  }
+  closeModal() {
+    this.currentModal.close();
+  }
+
+  set setCurrentModal(id) {
+    this.currentModal = document.getElementById(id);
   }
 }
 export const ui = new UI(1200, 800, '2d');

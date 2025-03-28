@@ -27,15 +27,42 @@
         </form>
       </dialog>
       <!-- Settings -->
-      <dialog>
-        <h2>Difficulty</h2>
-        <select name="" id="">
-          <option value="">Dog</option>
-          <option value="">Normal</option>
-        </select>
+      <dialog id="settings">
+        <span>X</span>
+        <form id="settings-content">
+          <div class="flex">
+            <h2>Difficulty</h2>
+            <select name="difficulty" id="difficulty">
+              <option value="normal">Normal</option>
+              <option value="dog">Dog</option>
+            </select>
+          </div>
+          <div class="flex">
+            <h2>Volume</h2>
+            <input type="range" min="0" max="10" value="5" id="volume-slider" />
+          </div>
+          <ul>
+            <h2>Instructions</h2>
+            <li>Click on any items you find interactive</li>
+            <li>
+              Click on the bag that is on the middle paw to open/close your
+              inventory
+            </li>
+            <li>
+              To add/remove items to the puzzle click on any items when the
+              puzzle interface is open
+            </li>
+          </ul>
+          <!-- <h2>Credits</h2> -->
+          <!-- <p>This game was created by HarpCodes</p> -->
+        </form>
       </dialog>
       <dialog id="birthstones-modal">
-        <img src="./assets/images/birthstones.webp" width="500" alt="">
+        <span>X</span>
+        <img src="./assets/images/birthstones.webp" width="500" alt="" />
+      </dialog>
+      <dialog id="win-screen">
+        <img src="./assets/images/BREAD.gif" alt="win" />
       </dialog>
       <!-- Controls -->
       <section id="paw">

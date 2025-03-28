@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 /* General */
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 /* testing */
 img {
   display: block;
@@ -17,6 +22,10 @@ body {
   font-size: 1.5rem;
   margin: 0 auto;
   text-align: center;
+  cursor: url(./assets/images/cursor.cur), auto;
+}
+button:hover {
+  cursor: url(./assets/images/cursor.cur), auto;
 }
 
 main {
@@ -41,6 +50,32 @@ main {
   padding: 1em;
   visibility: hidden;
 }
+/* Settings */
+#settings {
+  text-align: right;
+  width: 700px;
+  height: 500px;
+}
+#settings li {
+  margin-left: 1em;
+}
+#settings form {
+  text-align: left;
+}
+
+input[type='range'] {
+  width: 30%;
+}
+
+select {
+  width: 30%;
+  height: 20px;
+}
+
+#win-screen {
+  width: 500px;
+}
+
 #inventory {
   scale: 0;
   position: absolute;
@@ -58,7 +93,7 @@ main {
 }
 
 #inventory-btn:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 #inventory > * {
@@ -66,7 +101,7 @@ main {
   z-index: 3;
 }
 .item:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
   scale: 1.2;
 }
 /* Game */
@@ -93,6 +128,16 @@ img {
   max-width: 100%;
 }
 /* Lock Puzzle */
+#birthstones-modal {
+  text-align: right;
+}
+span {
+  color: red;
+  font-weight: 900;
+}
+span:hover {
+  /* cursor: pointer; */
+}
 
 dialog {
   position: absolute;
@@ -103,6 +148,7 @@ dialog {
   z-index: 2;
   border-radius: 20px;
 }
+
 dialog button {
   font-size: 1em;
   padding: 0 1em;
@@ -130,7 +176,7 @@ dialog button {
 }
 
 #bark:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
   scale: 1.1;
 }
 #bark:active {
@@ -175,7 +221,7 @@ dialog button {
 #menu:hover,
 #hint:hover,
 #inventory-btn:hover {
-  cursor: pointer;
+  /* cursor: pointer; */
   scale: 1.2;
 }
 #left-arrow:active,

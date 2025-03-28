@@ -32,6 +32,7 @@ class Bedroom extends Level {
     const word = this.puzzle.reduce((acc, cur) => {
       return acc + cur.name[0];
     }, '');
+    
     if (word === 'bread') return true;
     return false;
   }
