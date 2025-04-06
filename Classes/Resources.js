@@ -15,6 +15,10 @@ class Resources {
     this.sounds = {
       win: new Audio('./assets/sounds/Hank C Burnette -Rockin The Dog.mp3'),
       bark: new Audio('./assets/sounds/bark.mp3'),
+      bite: new Audio('./assets/sounds/bite.mp3'),
+      backgroundMusic: new Audio(
+        './assets/sounds/music-for-puzzle-game-146738.mp3'
+      ),
     };
     this.loaded = false;
   }

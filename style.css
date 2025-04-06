@@ -231,3 +231,8 @@ dialog button {
 #inventory-btn:active {
   scale: 1;
 }
+
+/* Modals */
+#win-screen {
+  padding: 0;
+}

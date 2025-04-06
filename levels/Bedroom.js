@@ -6,9 +6,15 @@ import Item from '../Classes/Item.js';
 // No sure if this is the best way to approach this? will this load the images each time?
 const assets = !resources.loaded ? await resources.loadImages() : null;
 console.log(resources);
+if (resources.loaded) {
+  resources.sounds.backgroundMusic.play();
+}
 
 class Bedroom extends Level {
-  hints = ['Maybe there is something that will show me what these rocks are?','Maybe the first letters of these rocks spell something?']
+  hints = [
+    'Maybe there is something that will show me what these rocks are?',
+    'Maybe the first letters of these rocks spell something?',
+  ];
   constructor(resource, itemsLayerCtx) {
     super(resource, itemsLayerCtx);
     this.puzzle = [];
@@ -32,7 +38,7 @@ class Bedroom extends Level {
     const word = this.puzzle.reduce((acc, cur) => {
       return acc + cur.name[0];
     }, '');
-    
+
     if (word === 'bread') return true;
     return false;
   }

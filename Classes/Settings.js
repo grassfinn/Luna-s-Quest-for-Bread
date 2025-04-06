@@ -7,11 +7,7 @@ class Settings {
 
   set setVolume(volume) {
     this.volume = volume;
-  }
-
-  //   Check this?
-  
+  }  
 }
-
 
 export const settings = new Settings();

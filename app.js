@@ -29,6 +29,7 @@ settings.formInputs.forEach((input) =>
 resources.sounds.win.volume = 0.55;
 resources.sounds.win.currentTime = 6;
 resources.sounds.bark.volume = settings.volume;
+resources.sounds.bite.volume = settings.volume;
 
 currentLevel.draw(ui.backgroundLayerCtx);
 
@@ -107,6 +108,7 @@ function handleGlobalClick(e) {
 // Better way to do this?
 function handleWin(bool) {
   if (bool) {
+    resources.sounds.bite.play();
     ui.setCurrentModal = 'win-screen';
     resources.sounds.win.play();
     ui.currentModal.showModal();
