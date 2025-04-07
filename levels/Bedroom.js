@@ -11,6 +11,8 @@ if (resources.loaded) {
 }
 
 class Bedroom extends Level {
+  puzzleSlots = document.getElementsByClassName('item-slot');
+
   hints = [
     'Maybe there is something that will show me what these rocks are?',
     'Maybe the first letters of these rocks spell something?',
@@ -41,6 +43,15 @@ class Bedroom extends Level {
 
     if (word === 'bread') return true;
     return false;
+  }
+  placeInEmptySlot(item) {
+    for (let i = 0; i < this.puzzleSlots.length; i++) {
+      const slot = this.puzzleSlots[i];
+      if (!slot.childElementCount) {
+        slot.append(item);
+        break;
+      }
+    }
   }
 }
 

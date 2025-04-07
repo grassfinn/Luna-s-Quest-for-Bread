@@ -131,6 +131,12 @@ img {
 #birthstones-modal {
   text-align: right;
 }
+
+.item-slot {
+  box-shadow: rgba(0, 0, 0, 1) 0px 2px 4px 0px inset;
+  border-radius: 5px;
+}
+
 span {
   color: red;
   font-weight: 900;
@@ -141,7 +147,7 @@ span:hover {
 
 dialog {
   position: absolute;
-  padding: 1em;
+  padding: .5em;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -155,11 +161,16 @@ dialog button {
 }
 #lock {
   display: flex;
+  gap: 10px;
 }
+
+form {
+  margin-top: 1em;
+}
+
 #lock > * {
   width: 50px;
   height: 50px;
-  border: 2px solid black;
 }
 /* Controls */
 #paw,

@@ -96,7 +96,7 @@ function handleGlobalClick(e) {
   // Might Cause Issues
   // Was set on UI Dialog
   if (ui.currentModal.open) {
-    handlePuzzleInteraction(currentElement, currentElement.parentElement.id);
+    handlePuzzleInteraction(currentElement);
     return;
   }
   // if dialog is open and puzzle has length,
@@ -121,14 +121,10 @@ function handleWin(bool) {
     ui.currentModal.showModal();
   }
 }
-function handlePuzzleInteraction(imgElement, zone) {
-  const slots = document.querySelectorAll('.slot');
-  const children = [...slots].map((slot) =>
-    slot.children.length ? true : false
-  );
-  console.log(children);
-  // If that slot has a child then dont try to put an item in that slot
-
+function handlePuzzleInteraction(imgElement) {
+  // add into item class the zone it is in
+  const zone = imgElement.parentElement.id;
+  // If that slot has a child then don't try to put an item in that slot
   // Switch items by the determining zone.
   const itemName = imgElement.dataset.name;
   const indexOfItem =
@@ -151,7 +147,7 @@ function handlePuzzleInteraction(imgElement, zone) {
   }
   // Maybe Shift inside of push?
   bedroom.puzzle.push(currentItem);
-  ui.puzzle.append(imgElement);
+  bedroom.placeInEmptySlot(imgElement);
   // Fix This?
   inventory.removeItem(indexOfItem);
   return;
