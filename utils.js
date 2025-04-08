@@ -20,4 +20,3 @@ export function getMouseCoords(event, element) {
   const canvasY = y - bounding.top;
   return { canvasX, canvasY };
 }
-

@@ -8,11 +8,12 @@ import { settings } from './Classes/Settings.js';
 // export const assets = await resources.loadImages();
 
 // TODO
+// all sounds have current time to 0
 // Tutorial/Cutscene?
 // Hints based on how many items are in inventory
 // Interactable Canvas/ items hidden under a different layer
 // Controls
-// Attempt Level Builder
+// Attempt Level Builder (in progress)
 
 //? Things to look into
 // canvas to draw opacity/Alpha Channel
@@ -62,10 +63,14 @@ function handleGlobalClick(e) {
   const clickedItem = currentElement.dataset.name;
   // Close Modal
   if (currentElement.textContent === 'X') {
+    resources.sounds.incorrect.play();
+    resources.sounds.incorrect.currentTime = 0;
     ui.currentModal.close();
   }
   // Paw Buttons
   if (currentElement.id === 'menu') {
+    resources.sounds.settings.play();
+    resources.sounds.settings.currentTime = 0;
     ui.setCurrentModal = 'settings';
     ui.currentModal.showModal();
   }
@@ -108,6 +113,7 @@ function handleGlobalClick(e) {
 // Better way to do this?
 function handleWin(bool) {
   if (bool) {
+    resources.sounds.backgroundMusic.pause();
     resources.sounds.bite.play();
     ui.setCurrentModal = 'win-screen';
     resources.sounds.win.play();
@@ -115,15 +121,22 @@ function handleWin(bool) {
     return;
   }
   if (bedroom.checkPuzzle()) {
+    resources.sounds.backgroundMusic.pause();
     resources.sounds.win.play();
     ui.currentModal.close();
     ui.setCurrentModal = 'win-screen';
     ui.currentModal.showModal();
+    return;
   }
+  resources.sounds.incorrect.play();
+  resources.sounds.incorrect.currentTime = 0;
 }
 function handlePuzzleInteraction(imgElement) {
+  console.log(imgElement);
+
   // add into item class the zone it is in
-  const zone = imgElement.parentElement.id;
+  const zone =
+    imgElement.parentElement.id || imgElement.parentElement.classList[1];
   // If that slot has a child then don't try to put an item in that slot
   // Switch items by the determining zone.
   const itemName = imgElement.dataset.name;
@@ -138,6 +151,8 @@ function handlePuzzleInteraction(imgElement) {
 
   if (!currentItem) return;
 
+  // fixed inventory
+  // Not going into the correct spot since the slot addition
   if (zone === 'lock') {
     inventory.items.push(currentItem);
     ui.inventory.append(imgElement);
@@ -145,11 +160,13 @@ function handlePuzzleInteraction(imgElement) {
     bedroom.puzzle = removeItem(indexOfItem, bedroom.puzzle);
     return;
   }
-  // Maybe Shift inside of push?
+
+  // Add item based on the open spot
   bedroom.puzzle.push(currentItem);
   bedroom.placeInEmptySlot(imgElement);
   // Fix This?
   inventory.removeItem(indexOfItem);
+
   return;
 }
 
@@ -168,6 +185,8 @@ function handleKeyUp(e) {
 
 function handleInventory() {
   // Play sound
+  resources.sounds.openInventory.play();
+  resources.sounds.openInventory.currentTime = 0;
   // Open
   if (ui.inventory.className === 'open') {
     ui.inventory.animate(
@@ -201,6 +220,8 @@ function handleMouseClick(event, element) {
       let { x, y, w, h } = dimensions;
 
       if (clickedItem.name === 'birthStonePictureFrame') {
+        resources.sounds.openInventory.play();
+        resources.sounds.openInventory.currentTime = 0;
         ui.setCurrentModal = 'birthstones-modal';
         ui.currentModal.showModal();
         return;
@@ -216,6 +237,8 @@ function handleMouseClick(event, element) {
         // dialogElement.showModal();
         //! Show allows other elements to be clicked
         ui.currentModal.show();
+        resources.sounds.openInventory.play();
+        resources.sounds.openInventory.currentTime = 0;
         return;
       }
 
@@ -228,6 +251,8 @@ function handleMouseClick(event, element) {
       // can pick up
       ui.itemsLayerCtx.clearRect(x, y, w, h);
       bedroom.removeItem(clickedItem);
+      resources.sounds.itemPickup.play();
+      resources.sounds.itemPickup.currentTime = 0;
 
       // Place in inventory
       inventory.addItem(clickedItem);
@@ -252,12 +277,12 @@ function handleSettingsChange(input) {
 const closeInventoryAnimation = [
   [{ scale: 0 }],
   {
-    duration: 750,
+    duration: 300,
   },
 ];
 const openInventoryAnimation = [
   [{ scale: 1 }],
   {
-    duration: 750,
+    duration: 300,
   },
 ];

@@ -16,11 +16,15 @@ class Resources {
       win: new Audio('./assets/sounds/Hank C Burnette -Rockin The Dog.mp3'),
       bark: new Audio('./assets/sounds/bark.mp3'),
       bite: new Audio('./assets/sounds/bite.mp3'),
-      backgroundMusic: new Audio(
-        './assets/sounds/music-for-puzzle-game-146738.mp3'
-      ),
+      backgroundMusic: new Audio('./assets/sounds/background.mp3'),
+      itemPickup: new Audio('./assets/sounds/pop.mp3'),
+      openInventory: new Audio('./assets/sounds/inventory.mp3'),
+      incorrect: new Audio('./assets/sounds/wrong.mp3'),
+      settings: new Audio('./assets/sounds/oh-no.mp3'),
     };
     this.loaded = false;
+    this.sounds.backgroundMusic.loop = true;
+    this.sounds.win.loop = true;
   }
 
   // Load each Image using promises to prevent images not loading in
