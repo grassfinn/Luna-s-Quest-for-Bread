@@ -98,20 +98,18 @@ function handleGlobalClick(e) {
     return;
   }
 
+  if (currentElement.alt) {
+    ui.displayMsg(currentElement.alt);
+  }
   // Might Cause Issues
   // Was set on UI Dialog
   if (ui.currentModal.open) {
-    handlePuzzleInteraction(currentElement);
-    return;
-  }
-  // if dialog is open and puzzle has length,
-  // put item back into the inventory
-  if (currentElement.alt) {
-    return ui.displayMsg(currentElement.alt);
+    return handlePuzzleInteraction(currentElement);
   }
 }
 // Better way to do this?
 function handleWin(bool) {
+  
   if (bool) {
     resources.sounds.backgroundMusic.pause();
     resources.sounds.bite.play();
@@ -132,7 +130,7 @@ function handleWin(bool) {
   resources.sounds.incorrect.currentTime = 0;
 }
 function handlePuzzleInteraction(imgElement) {
-  console.log(imgElement);
+  // console.log(imgElement);
 
   // add into item class the zone it is in
   const zone =
@@ -220,6 +218,8 @@ function handleMouseClick(event, element) {
       let { x, y, w, h } = dimensions;
 
       if (clickedItem.name === 'birthStonePictureFrame') {
+        // Check if modal is open
+        if (ui.currentModal.open) return;
         resources.sounds.openInventory.play();
         resources.sounds.openInventory.currentTime = 0;
         ui.setCurrentModal = 'birthstones-modal';
@@ -257,7 +257,7 @@ function handleMouseClick(event, element) {
       // Place in inventory
       inventory.addItem(clickedItem);
       ui.inventory.append(createImage(clickedItem));
-      console.log({ itemsLeft: bedroom.items });
+      // console.log({ itemsLeft: bedroom.items });
     }
   });
 }

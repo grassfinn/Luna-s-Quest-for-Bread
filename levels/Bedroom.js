@@ -38,11 +38,13 @@ class Bedroom extends Level {
 
   checkPuzzle() {
     const word = [...this.puzzleSlots].reduce((acc, cur) => {
+      // check if first child exists?
+      if (!cur.firstChild) return false;
+
       const firstLetter = cur.firstChild.dataset.name[0];
 
       return acc + firstLetter;
     }, '');
-    console.log(word);
 
     if (word === 'bread') return true;
     return false;
