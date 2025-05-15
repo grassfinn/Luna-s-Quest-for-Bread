@@ -1,6 +1,7 @@
 class UI {
   currentModal;
   inventory = document.querySelector('#inventory');
+  isModalOpen = false;
   //   Debugger is a reserved word
   debugger = document.querySelector('#debugger');
   debuggerText = document.querySelector('#debug-text');

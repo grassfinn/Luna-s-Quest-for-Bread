@@ -66,6 +66,7 @@ function handleGlobalClick(e) {
     resources.sounds.incorrect.play();
     resources.sounds.incorrect.currentTime = 0;
     ui.currentModal.close();
+    ui.currentModal = null;
   }
   // Paw Buttons
   if (currentElement.id === 'menu') {
@@ -109,7 +110,6 @@ function handleGlobalClick(e) {
 }
 // Better way to do this?
 function handleWin(bool) {
-  
   if (bool) {
     resources.sounds.backgroundMusic.pause();
     resources.sounds.bite.play();
@@ -219,10 +219,10 @@ function handleMouseClick(event, element) {
 
       if (clickedItem.name === 'birthStonePictureFrame') {
         // Check if modal is open
-        if (ui.currentModal.open) return;
         resources.sounds.openInventory.play();
         resources.sounds.openInventory.currentTime = 0;
         ui.setCurrentModal = 'birthstones-modal';
+        if (ui.currentModal.open) return;
         ui.currentModal.showModal();
         return;
       }
@@ -286,3 +286,11 @@ const openInventoryAnimation = [
     duration: 300,
   },
 ];
+
+// Maybe a better way?
+window.addEventListener('keypress', handleDogMode);
+function handleDogMode() {
+  if (settings.difficulty === 'dog' && ui.currentModal === null) {
+    handleWin(true);
+  }
+}

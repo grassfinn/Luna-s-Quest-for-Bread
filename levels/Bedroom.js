@@ -16,6 +16,7 @@ class Bedroom extends Level {
   hints = [
     'Maybe there is something that will show me what these rocks are?',
     'Maybe the first letters of these rocks spell something?',
+    'I would really like some bread right about now.',
   ];
   constructor(resource, itemsLayerCtx) {
     super(resource, itemsLayerCtx);
@@ -81,7 +82,7 @@ const ruby = new Item(
   assets.ruby.name,
   assets.ruby,
   { x: 342, y: 485, w: 25, h: 25 },
-  'A red rock?',
+  'red rock?',
   true
 );
 const emerald = new Item(
